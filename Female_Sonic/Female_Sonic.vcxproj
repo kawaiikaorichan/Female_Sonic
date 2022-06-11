@@ -154,11 +154,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Finger.h" />
+    <ClInclude Include="FingerDC.h" />
+    <ClInclude Include="FingerDX.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="lanternapi.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="Sonic.h" />
+    <ClInclude Include="PrincessDC.h" />
+    <ClInclude Include="PrincessDX.h" />
+    <ClInclude Include="SonicAthleticDC.h" />
+    <ClInclude Include="SonicAthleticDX.h" />
+    <ClInclude Include="SonicDressDC.h" />
+    <ClInclude Include="SonicDressDX.h" />
     <ClInclude Include="SSBall.h" />
     <ClInclude Include="sstextlist.h" />
   </ItemGroup>

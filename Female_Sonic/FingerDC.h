@@ -141,6 +141,6 @@ NJS_VECTOR normal_0006E290[] = {
 
 NJS_MODEL_SADX attach_000EEC68 = { vertex_0006E3E0, normal_0006E290, LengthOfArray<Sint32>(vertex_0006E3E0), meshlist_0006E530, matlist_0006E6CC, LengthOfArray<Uint16>(meshlist_0006E530), LengthOfArray<Uint16>(matlist_0006E6CC), { 0.355112f, -0.000493f, 0.06275f }, 0.845475f, NULL };
 
-NJS_OBJECT Finger = { NJD_EVAL_UNIT_ANG | NJD_EVAL_UNIT_SCL | NJD_EVAL_BREAK, &attach_000EEC68, 1.035896f, 0.033785f, -0.042846f, 0, 0, 0, 1, 1, 1, NULL, NULL };
+NJS_OBJECT FingerDC = { NJD_EVAL_UNIT_ANG | NJD_EVAL_UNIT_SCL | NJD_EVAL_BREAK, &attach_000EEC68, 1.035896f, 0.033785f, -0.042846f, 0, 0, 0, 1, 1, 1, NULL, NULL };
 
 #pragma warning(pop)

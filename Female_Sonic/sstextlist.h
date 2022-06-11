@@ -85,6 +85,12 @@ NJS_TEXNAME SUPERSONIC_DCTexName[] = {
 	{ (void*)"stx_kutusoko1" },
 	{ (void*)"stx_shoose4" },
 	{ (void*)"stx_shoose6" },
+	{ (void*)"atx_ring"},
+	{ (void*)"atx_ring"},
+	{ (void*)"atx_ring"},
+	{ (void*)"atx_ring"},
+	{ (void*)"atx_ring"},
+	{ (void*)"atx_ring"},
 	{ (void*)"atx_ring"}
 };
 

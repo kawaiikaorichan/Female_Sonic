@@ -21,10 +21,10 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Sonic.h">
+    <ClInclude Include="SonicDressDC.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Finger.h">
+    <ClInclude Include="FingerDC.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SSBall.h">
@@ -34,6 +34,24 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lanternapi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SonicAthleticDC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SonicDressDX.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SonicAthleticDX.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FingerDX.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PrincessDC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PrincessDX.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
