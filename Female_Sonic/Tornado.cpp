@@ -30,8 +30,8 @@ void njAction_Queue_Tornado(NJS_ACTION* action, float frame, QueuedModelFlagsB f
 	DisplayAnimationFrame(action, frame, flags, 0.0, TornadoCallBack);
 }
 
-void Tornado_init(const HelperFunctions& helperFunctions) {
-	ModelInfo* mdl = new ModelInfo(helperFunctions.GetReplaceablePath("system\\SONIC_PLANE.sa1mdl"));
+void TornadoDCD_init(const HelperFunctions& helperFunctions) {
+	ModelInfo* mdl = new ModelInfo(helperFunctions.GetReplaceablePath("system\\SONICDCD_PLANE.sa1mdl"));
 
 	if (mdl->getformat() == ModelFormat_Basic) {
 		SonicPlaneMdl = mdl;
@@ -45,6 +45,63 @@ void Tornado_init(const HelperFunctions& helperFunctions) {
 		WriteCall((void*)0x62753A, njAction_Queue_Tornado);
 	}
 	else {
-		PrintDebug("[Female Sonic] Cannot open \"SONIC_PLANE.sa1mdl\".\n");
+		PrintDebug("[Female Sonic] Cannot open \"SONICDCD_PLANE.sa1mdl\".\n");
+	}
+}
+
+void TornadoDCA_init(const HelperFunctions& helperFunctions) {
+	ModelInfo* mdl = new ModelInfo(helperFunctions.GetReplaceablePath("system\\SONICDCA_PLANE.sa1mdl"));
+
+	if (mdl->getformat() == ModelFormat_Basic) {
+		SonicPlaneMdl = mdl;
+
+		// We only replace Sonic's part of the plane
+		Tornado1_Object.child->sibling->sibling->sibling->child = SonicPlaneMdl->getmodel();
+		Tornado2Before_Object.child->sibling->sibling->child = SonicPlaneMdl->getmodel();
+		Tornado2Change_Object.child->sibling->sibling->sibling->sibling->child = SonicPlaneMdl->getmodel();
+
+		// Hack to use our own texture for Female Sonic's part of the plane, allowing compatibility with dc mods.
+		WriteCall((void*)0x62753A, njAction_Queue_Tornado);
+	}
+	else {
+		PrintDebug("[Female Sonic] Cannot open \"SONICDCA_PLANE.sa1mdl\".\n");
+	}
+}
+
+void TornadoDXD_init(const HelperFunctions& helperFunctions) {
+	ModelInfo* mdl = new ModelInfo(helperFunctions.GetReplaceablePath("system\\SONICDXD_PLANE.sa1mdl"));
+
+	if (mdl->getformat() == ModelFormat_Basic) {
+		SonicPlaneMdl = mdl;
+
+		// We only replace Sonic's part of the plane
+		Tornado1_Object.child->sibling->sibling->sibling->child = SonicPlaneMdl->getmodel();
+		Tornado2Before_Object.child->sibling->sibling->child = SonicPlaneMdl->getmodel();
+		Tornado2Change_Object.child->sibling->sibling->sibling->sibling->child = SonicPlaneMdl->getmodel();
+
+		// Hack to use our own texture for Female Sonic's part of the plane, allowing compatibility with dc mods.
+		WriteCall((void*)0x62753A, njAction_Queue_Tornado);
+	}
+	else {
+		PrintDebug("[Female Sonic] Cannot open \"SONICDXD_PLANE.sa1mdl\".\n");
+	}
+}
+
+void TornadoDXA_init(const HelperFunctions& helperFunctions) {
+	ModelInfo* mdl = new ModelInfo(helperFunctions.GetReplaceablePath("system\\SONICDXA_PLANE.sa1mdl"));
+
+	if (mdl->getformat() == ModelFormat_Basic) {
+		SonicPlaneMdl = mdl;
+
+		// We only replace Sonic's part of the plane
+		Tornado1_Object.child->sibling->sibling->sibling->child = SonicPlaneMdl->getmodel();
+		Tornado2Before_Object.child->sibling->sibling->child = SonicPlaneMdl->getmodel();
+		Tornado2Change_Object.child->sibling->sibling->sibling->sibling->child = SonicPlaneMdl->getmodel();
+
+		// Hack to use our own texture for Female Sonic's part of the plane, allowing compatibility with dc mods.
+		WriteCall((void*)0x62753A, njAction_Queue_Tornado);
+	}
+	else {
+		PrintDebug("[Female Sonic] Cannot open \"SONICDXA_PLANE.sa1mdl\".\n");
 	}
 }
