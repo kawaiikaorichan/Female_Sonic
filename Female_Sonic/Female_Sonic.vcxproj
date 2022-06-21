@@ -116,7 +116,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <AdditionalDependencies>$(SolutionDir)bin\ModLoaderCommon.lib;$(SolutionDir)bin\libmodutils.lib;$(SolutionDir)Female_Sonic\sadx-dc-lighting.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <DelayLoadDLLs>sadx-dc-lighting.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
+      <DelayLoadDLLs>
+      </DelayLoadDLLs>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

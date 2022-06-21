@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "SADXVariables.h"
 #include "sstextlist.h"
 
 #include "SonicDressDC.h"
@@ -35,18 +34,20 @@ void __cdecl SetLSDColor()
 }
 
 //Light Dash Aura for DC conversion
-void __cdecl Sonic_DisplayLightDashModel_mod(EntityData1* data1, CharObj2** data2_pp, CharObj2* data2)
+void __cdecl Sonic_DisplayLightDashModel_mod(EntityData1* data1, EntityData2* data2_pp, CharObj2* data2)
 {
 	int v3; // eax
 	__int16 v4; // t1
-	float v5; // st7
-	float basedepth = 8000.0f;
+	double v5; // st7
+	float v6; // ST28_4
+	double v7; // st7
 	NJS_ACTION v8; // [esp+4h] [ebp-18h]
-	NJS_OBJECT** ___SONIC_OBJECTS = (NJS_OBJECT**)GetProcAddress(GetModuleHandle(L"CHRMODELS_orig"), "___SONIC_OBJECTS");
+	NJS_ARGB a1; // [esp+Ch] [ebp-10h]
+
 	if (!MissedFrames)
 	{
 		v3 = (unsigned __int16)data2->AnimationThing.Index;
-		v8.object = ___SONIC_OBJECTS[54];
+		v8.object = SONIC_OBJECTS[54];
 		if (data2->AnimationThing.State == 2)
 		{
 			v4 = data2->AnimationThing.LastIndex;
@@ -56,34 +57,30 @@ void __cdecl Sonic_DisplayLightDashModel_mod(EntityData1* data1, CharObj2** data
 		{
 			v8.motion = data2->AnimationThing.AnimData[v3].Animation->motion;
 		}
-		v5 = (float)(FrameCounterUnpaused & 0x7F);
-		if (v5 >= 64.0f)
+		v5 = (double)(LevelFrameCount & 0x7F);
+		if (v5 >= 64.0)
 		{
-			v5 = 128.0f - v5;
+			v5 = 128.0 - v5;
 		}
-		//v5 = 0;
+		v6 = v5 * 0.015625;
 		njPushMatrixEx();
 		njControl3D(NJD_CONTROL_3D_CONSTANT_MATERIAL | NJD_CONTROL_3D_ENABLE_ALPHA | NJD_CONTROL_3D_CONSTANT_ATTR);
-		njColorBlendingMode(0, NJD_COLOR_BLENDING_ONE);
+		njColorBlendingMode(0, NJD_COLOR_BLENDING_SRCALPHA);
 		njColorBlendingMode(NJD_DESTINATION_COLOR, NJD_COLOR_BLENDING_ONE);
-		// Main
-		SetMaterialAndSpriteColor_Float(1.0f, 0.7, 0.06f + (64.0f - v5) / 880.0f, 0.65f);
-		DrawQueueDepthBias = basedepth;
-		late_ActionMesh(&v8, data2->AnimationThing.Frame, 0);
-		// Outer 1
-		njScale(0, 1.05f, 1.05f, 1.05f);
-		SetMaterialAndSpriteColor_Float(1.0f, 0.73f, (64.0f - v5) / 1050.0f, 0.65f);
-		DrawQueueDepthBias = basedepth + 300.0f;
-		late_ActionMesh(&v8, data2->AnimationThing.Frame, 0);
-		// Outer 2
-		njScale(0, 1.05f, 1.05f, 1.05f);
-		SetMaterialAndSpriteColor_Float(1.0f, 0.08f, (64.0f - v5) / 2000.0f, 0.1f);
-		DrawQueueDepthBias = basedepth + 600.0f;
-		late_ActionMesh(&v8, data2->AnimationThing.Frame, 0);
+		v7 = v6 * 0.1;
+		a1.r = 0.7;
+		a1.a = 0.8;
+		a1.g = 0.1 - v7;
+		a1.b = 0.65 - v7;
+		SetMaterialAndSpriteColor(&a1);
+		njAction_Queue_407FC0(&v8, data2->AnimationThing.Frame, 0);
+		njScale(0, 1.05, 1.05, 1.05);
+		njAction_Queue_407FC0(&v8, data2->AnimationThing.Frame, 0);
+		njScale(0, 1.05, 1.05, 1.05);
+		njAction_Queue_407FC0(&v8, data2->AnimationThing.Frame, 0);
 		njColorBlendingMode(0, NJD_COLOR_BLENDING_SRCALPHA);
 		njColorBlendingMode(NJD_DESTINATION_COLOR, NJD_COLOR_BLENDING_INVSRCALPHA);
 		njPopMatrixEx();
-		DrawQueueDepthBias = 0;
 	}
 }
 
@@ -2141,14 +2138,14 @@ void __cdecl InitNPCSonicWeldInfo_AthleticDX()
 	NPCSonicWeldInfo[12].anonymous_5 = 0;
 	NPCSonicWeldInfo[12].VertexBuffer = 0;
 	NPCSonicWeldInfo[12].WeldType = 2;
-	NPCSonicWeldInfo[12].VertIndexes = (unsigned __int16*)Sonic_LSShoeIndices;
+	NPCSonicWeldInfo[12].VertIndexes = (unsigned __int16*)Sonic_LSShoeIndices_AthleticDX;
 	NPCSonicWeldInfo[13].BaseModel = *SONIC_OBJECTS;
 	NPCSonicWeldInfo[13].ModelA = SONIC_OBJECTS[60];
 	v3 = SONIC_OBJECTS[61];
 	NPCSonicWeldInfo[13].anonymous_5 = 0;
 	NPCSonicWeldInfo[13].VertexBuffer = 0;
 	NPCSonicWeldInfo[13].ModelB = v3;
-	NPCSonicWeldInfo[13].VertIndexes = (unsigned __int16*)Sonic_LSShoeIndices;
+	NPCSonicWeldInfo[13].VertIndexes = (unsigned __int16*)Sonic_LSShoeIndices_AthleticDX;
 	NPCSonicWeldInfo[13].VertexPairCount = 9;
 	NPCSonicWeldInfo[13].WeldType = 2;
 	NPCSonicWeldInfo[14].BaseModel = *SONIC_OBJECTS;
@@ -3516,7 +3513,7 @@ void Init_SonicDressPureDC()
 	SONIC_OBJECTS[44] = &objectdcd_0057BC44;
 	SONIC_OBJECTS[45] = &objectdcd_0056998C;
 	SONIC_OBJECTS[46] = &objectdcd_00569594;
-	SONIC_OBJECTS[47] = &objectdcd_001CFBD8;
+	SONIC_OBJECTS[47] = &objectdcd_005812AC;
 	SONIC_OBJECTS[48] = &objectdcd_00569DEC;
 	SONIC_OBJECTS[49] = &objectdcd_00569594;
 	SONIC_OBJECTS[50] = &objectdcd_00569E20;
@@ -3656,22 +3653,14 @@ void Init_SonicDressPureDC()
 	SONIC_ACTIONS[139]->object = &objectdcd_0062DE88;
 	SONIC_ACTIONS[140]->object = &objectdcd_0062DE88;
 	SONIC_ACTIONS[141]->object = &objectdcd_0062DE88;
-	SONIC_ACTIONS[142]->object = &object_0062FE6C;
-	SONIC_ACTIONS[142]->object->basicdxmodel->mats[0].attr_texId = 75;
 	SONIC_ACTIONS[143]->object = &objectdcd_0062DE88;
 	SONIC_ACTIONS[144]->object = &objectdcd_0062DE88;
 	SONIC_ACTIONS[145]->object = &objectdcd_0056AF50;
 	SONIC_ACTIONS[146]->object = &objectdcd_0056AF50;
 	SONIC_ACTIONS[147]->object = &objectdcd_0056AF50;
 	SONIC_ACTIONS[148]->object = &objectdcd_0056AF50;
-	SONIC_MODELS[0] = nullptr;
-	SONIC_MODELS[1] = nullptr;
-	SONIC_MODELS[2] = nullptr;
-	SONIC_MODELS[3] = nullptr;
-	SONIC_MODELS[4] = nullptr;
-	SONIC_MODELS[5] = nullptr;
-	SONIC_MODELS[6] = nullptr;
-	SONIC_MODELS[7] = nullptr;
+	SONIC_MODELS[0] = &attachdcd_0055F304;
+	SONIC_MODELS[1] = &attachdcd_00560DA4;
 	SONIC_MODELS[8] = &attachdcd_00569568;
 	SONIC_MODELS[9] = &attachdcd_00579C68;
 	SONIC_MOTIONS[0] = &SONIC_MOTIONSDCD_0;
@@ -3731,7 +3720,7 @@ void Init_SonicDressPrincessDC()
 	SONIC_OBJECTS[44] = &objectdcd_0057BC44;
 	SONIC_OBJECTS[45] = &objectdcd_0056998C;
 	SONIC_OBJECTS[46] = &objectdcd_00569594;
-	SONIC_OBJECTS[47] = &objectdcd_001CFBD8;
+	SONIC_OBJECTS[47] = &objectdcd_005812AC;
 	SONIC_OBJECTS[48] = &objectdcd_00569DEC;
 	SONIC_OBJECTS[49] = &objectdcd_00569594;
 	SONIC_OBJECTS[50] = &objectdcd_00569E20;
@@ -3871,21 +3860,14 @@ void Init_SonicDressPrincessDC()
 	SONIC_ACTIONS[139]->object = &objectspdc_0062DE88;
 	SONIC_ACTIONS[140]->object = &objectspdc_0062DE88;
 	SONIC_ACTIONS[141]->object = &objectspdc_0062DE88;
-	SONIC_ACTIONS[142]->object = &objectspdc_0062FE6C;
 	SONIC_ACTIONS[143]->object = &objectspdc_0062DE88;
 	SONIC_ACTIONS[144]->object = &objectspdc_0062DE88;
 	SONIC_ACTIONS[145]->object = &objectdcd_0056AF50;
 	SONIC_ACTIONS[146]->object = &objectdcd_0056AF50;
 	SONIC_ACTIONS[147]->object = &objectdcd_0056AF50;
 	SONIC_ACTIONS[148]->object = &objectdcd_0056AF50;
-	SONIC_MODELS[0] = nullptr;
-	SONIC_MODELS[1] = nullptr;
-	SONIC_MODELS[2] = nullptr;
-	SONIC_MODELS[3] = nullptr;
-	SONIC_MODELS[4] = nullptr;
-	SONIC_MODELS[5] = nullptr;
-	SONIC_MODELS[6] = nullptr;
-	SONIC_MODELS[7] = nullptr;
+	SONIC_MODELS[0] = &attachdcd_0055F304;
+	SONIC_MODELS[1] = &attachdcd_00560DA4;
 	SONIC_MODELS[8] = &attachdcd_00569568;
 	SONIC_MODELS[9] = &attachdcd_00579C68;
 	SONIC_MOTIONS[0] = &SONIC_MOTIONSDCD_0;
@@ -3945,7 +3927,7 @@ void Init_SonicAthleticPureDC()
 	SONIC_OBJECTS[44] = &objectdca_0057BC44;
 	SONIC_OBJECTS[45] = &objectdca_0056998C;
 	SONIC_OBJECTS[46] = &objectdca_00569594;
-	SONIC_OBJECTS[47] = &objectdca_001CFBD8;
+	SONIC_OBJECTS[47] = &objectdca_005812AC;
 	SONIC_OBJECTS[48] = &objectdca_00569DEC;
 	SONIC_OBJECTS[49] = &objectdca_00569594;
 	SONIC_OBJECTS[50] = &objectdca_00569E20;
@@ -4085,22 +4067,14 @@ void Init_SonicAthleticPureDC()
 	SONIC_ACTIONS[139]->object = &objectdca_0062DE88;
 	SONIC_ACTIONS[140]->object = &objectdca_0062DE88;
 	SONIC_ACTIONS[141]->object = &objectdca_0062DE88;
-	SONIC_ACTIONS[142]->object = &object_0062FE6C;
-	SONIC_ACTIONS[142]->object->basicdxmodel->mats[0].attr_texId = 77;
 	SONIC_ACTIONS[143]->object = &objectdca_0062DE88;
 	SONIC_ACTIONS[144]->object = &objectdca_0062DE88;
 	SONIC_ACTIONS[145]->object = &objectdca_0056AF50;
 	SONIC_ACTIONS[146]->object = &objectdca_0056AF50;
 	SONIC_ACTIONS[147]->object = &objectdca_0056AF50;
 	SONIC_ACTIONS[148]->object = &objectdca_0056AF50;
-	SONIC_MODELS[0] = nullptr;
-	SONIC_MODELS[1] = nullptr;
-	SONIC_MODELS[2] = nullptr;
-	SONIC_MODELS[3] = nullptr;
-	SONIC_MODELS[4] = nullptr;
-	SONIC_MODELS[5] = nullptr;
-	SONIC_MODELS[6] = nullptr;
-	SONIC_MODELS[7] = nullptr;
+	SONIC_MODELS[0] = &attachdca_0055F304;
+	SONIC_MODELS[1] = &attachdca_00560DA4;
 	SONIC_MODELS[8] = &attachdca_00569568;
 	SONIC_MODELS[9] = &attachdca_00579C68;
 	SONIC_MOTIONS[0] = &SONIC_MOTIONSDCA_0;
@@ -4160,7 +4134,7 @@ void Init_SonicAthleticPrincessDC()
 	SONIC_OBJECTS[44] = &objectdca_0057BC44;
 	SONIC_OBJECTS[45] = &objectdca_0056998C;
 	SONIC_OBJECTS[46] = &objectdca_00569594;
-	SONIC_OBJECTS[47] = &objectdca_001CFBD8;
+	SONIC_OBJECTS[47] = &objectdca_005812AC;
 	SONIC_OBJECTS[48] = &objectdca_00569DEC;
 	SONIC_OBJECTS[49] = &objectdca_00569594;
 	SONIC_OBJECTS[50] = &objectdca_00569E20;
@@ -4300,21 +4274,14 @@ void Init_SonicAthleticPrincessDC()
 	SONIC_ACTIONS[139]->object = &objectspdc_0062DE88;
 	SONIC_ACTIONS[140]->object = &objectspdc_0062DE88;
 	SONIC_ACTIONS[141]->object = &objectspdc_0062DE88;
-	SONIC_ACTIONS[142]->object = &objectspdc_0062FE6C;
 	SONIC_ACTIONS[143]->object = &objectspdc_0062DE88;
 	SONIC_ACTIONS[144]->object = &objectspdc_0062DE88;
 	SONIC_ACTIONS[145]->object = &objectdca_0056AF50;
 	SONIC_ACTIONS[146]->object = &objectdca_0056AF50;
 	SONIC_ACTIONS[147]->object = &objectdca_0056AF50;
 	SONIC_ACTIONS[148]->object = &objectdca_0056AF50;
-	SONIC_MODELS[0] = nullptr;
-	SONIC_MODELS[1] = nullptr;
-	SONIC_MODELS[2] = nullptr;
-	SONIC_MODELS[3] = nullptr;
-	SONIC_MODELS[4] = nullptr;
-	SONIC_MODELS[5] = nullptr;
-	SONIC_MODELS[6] = nullptr;
-	SONIC_MODELS[7] = nullptr;
+	SONIC_MODELS[0] = &attachdca_0055F304;
+	SONIC_MODELS[1] = &attachdca_00560DA4;
 	SONIC_MODELS[8] = &attachdca_00569568;
 	SONIC_MODELS[9] = &attachdca_00579C68;
 	SONIC_MOTIONS[0] = &SONIC_MOTIONSDCA_0;
@@ -4515,21 +4482,13 @@ void Init_SonicDressPureDX()
 	SONIC_ACTIONS[140]->object = &objectdxd_0062DE88;
 	SONIC_ACTIONS[141]->object = &objectdxd_0062DE88;
 	SONIC_ACTIONS[143]->object = &objectdxd_0062DE88;
-	SONIC_ACTIONS[142]->object = &object_0062FE6C;
-	SONIC_ACTIONS[142]->object->basicdxmodel->mats[0].attr_texId = 14;
 	SONIC_ACTIONS[144]->object = &objectdxd_0062DE88;
 	SONIC_ACTIONS[145]->object = &objectdxd_0056AF50;
 	SONIC_ACTIONS[146]->object = &objectdxd_0056AF50;
 	SONIC_ACTIONS[147]->object = &objectdxd_0056AF50;
 	SONIC_ACTIONS[148]->object = &objectdxd_0056AF50;
-	SONIC_MODELS[0] = nullptr;
-	SONIC_MODELS[1] = nullptr;
-	SONIC_MODELS[2] = nullptr;
-	SONIC_MODELS[3] = nullptr;
-	SONIC_MODELS[4] = nullptr;
-	SONIC_MODELS[5] = nullptr;
-	SONIC_MODELS[6] = nullptr;
-	SONIC_MODELS[7] = nullptr;
+	SONIC_MODELS[0] = &attachdxd_0055F304;
+	SONIC_MODELS[1] = &attachdxd_00560DA4;
 	SONIC_MODELS[8] = &attachdxd_00569568;
 	SONIC_MODELS[9] = &attachdxd_00579C68;
 	SONIC_MOTIONS[0] = &SONIC_MOTIONSDXD_0;
@@ -4729,21 +4688,14 @@ void Init_SonicDressPrincessDX()
 	SONIC_ACTIONS[139]->object = &objectspdx_0062DE88;
 	SONIC_ACTIONS[140]->object = &objectspdx_0062DE88;
 	SONIC_ACTIONS[141]->object = &objectspdx_0062DE88;
-	SONIC_ACTIONS[142]->object = &objectspdx_0062FE6C;
 	SONIC_ACTIONS[143]->object = &objectspdx_0062DE88;
 	SONIC_ACTIONS[144]->object = &objectspdx_0062DE88;
 	SONIC_ACTIONS[145]->object = &objectdxd_0056AF50;
 	SONIC_ACTIONS[146]->object = &objectdxd_0056AF50;
 	SONIC_ACTIONS[147]->object = &objectdxd_0056AF50;
 	SONIC_ACTIONS[148]->object = &objectdxd_0056AF50;
-	SONIC_MODELS[0] = nullptr;
-	SONIC_MODELS[1] = nullptr;
-	SONIC_MODELS[2] = nullptr;
-	SONIC_MODELS[3] = nullptr;
-	SONIC_MODELS[4] = nullptr;
-	SONIC_MODELS[5] = nullptr;
-	SONIC_MODELS[6] = nullptr;
-	SONIC_MODELS[7] = nullptr;
+	SONIC_MODELS[0] = &attachdxd_0055F304;
+	SONIC_MODELS[1] = &attachdxd_00560DA4;
 	SONIC_MODELS[8] = &attachdxd_00569568;
 	SONIC_MODELS[9] = &attachdxd_00579C68;
 	SONIC_MOTIONS[0] = &SONIC_MOTIONSDXD_0;
@@ -4943,22 +4895,14 @@ void Init_SonicAthleticPureDX()
 	SONIC_ACTIONS[139]->object = &objectdxa_0062DE88;
 	SONIC_ACTIONS[140]->object = &objectdxa_0062DE88;
 	SONIC_ACTIONS[141]->object = &objectdxa_0062DE88;
-	SONIC_ACTIONS[142]->object = &object_0062FE6C;
-	SONIC_ACTIONS[142]->object->basicdxmodel->mats[0].attr_texId = 14;
 	SONIC_ACTIONS[143]->object = &objectdxa_0062DE88;
 	SONIC_ACTIONS[144]->object = &objectdxa_0062DE88;
 	SONIC_ACTIONS[145]->object = &objectdxa_0056AF50;
 	SONIC_ACTIONS[146]->object = &objectdxa_0056AF50;
 	SONIC_ACTIONS[147]->object = &objectdxa_0056AF50;
 	SONIC_ACTIONS[148]->object = &objectdxa_0056AF50;
-	SONIC_MODELS[0] = nullptr;
-	SONIC_MODELS[1] = nullptr;
-	SONIC_MODELS[2] = nullptr;
-	SONIC_MODELS[3] = nullptr;
-	SONIC_MODELS[4] = nullptr;
-	SONIC_MODELS[5] = nullptr;
-	SONIC_MODELS[6] = nullptr;
-	SONIC_MODELS[7] = nullptr;
+	SONIC_MODELS[0] = &attachdxa_0055F304;
+	SONIC_MODELS[1] = &attachdxa_00560DA4;
 	SONIC_MODELS[8] = &attachdxa_00569568;
 	SONIC_MODELS[9] = &attachdxa_00579C68;
 	SONIC_MOTIONS[0] = &SONIC_MOTIONSDXA_0;
@@ -5158,21 +5102,14 @@ void Init_SonicAthleticPrincessDX()
 	SONIC_ACTIONS[139]->object = &objectspdx_0062DE88;
 	SONIC_ACTIONS[140]->object = &objectspdx_0062DE88;
 	SONIC_ACTIONS[141]->object = &objectspdx_0062DE88;
-	SONIC_ACTIONS[142]->object = &objectspdx_0062FE6C;
 	SONIC_ACTIONS[143]->object = &objectspdx_0062DE88;
 	SONIC_ACTIONS[144]->object = &objectspdx_0062DE88;
 	SONIC_ACTIONS[145]->object = &objectdxa_0056AF50;
 	SONIC_ACTIONS[146]->object = &objectdxa_0056AF50;
 	SONIC_ACTIONS[147]->object = &objectdxa_0056AF50;
 	SONIC_ACTIONS[148]->object = &objectdxa_0056AF50;
-	SONIC_MODELS[0] = nullptr;
-	SONIC_MODELS[1] = nullptr;
-	SONIC_MODELS[2] = nullptr;
-	SONIC_MODELS[3] = nullptr;
-	SONIC_MODELS[4] = nullptr;
-	SONIC_MODELS[5] = nullptr;
-	SONIC_MODELS[6] = nullptr;
-	SONIC_MODELS[7] = nullptr;
+	SONIC_MODELS[0] = &attachdxa_0055F304;
+	SONIC_MODELS[1] = &attachdxa_00560DA4;
 	SONIC_MODELS[8] = &attachdxa_00569568;
 	SONIC_MODELS[9] = &attachdxa_00579C68;
 	SONIC_MOTIONS[0] = &SONIC_MOTIONSDXA_0;
