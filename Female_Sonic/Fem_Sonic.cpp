@@ -5129,6 +5129,9 @@ extern "C" __declspec(dllexport) void __cdecl Init(const char* path, const Helpe
 	NJS_MODEL_SADX** ___SONIC_MODELS = (NJS_MODEL_SADX**)GetProcAddress(handle, "___SONIC_MODELS");
 	NJS_MOTION** ___SONIC_MOTIONS = (NJS_MOTION**)GetProcAddress(handle, "___SONIC_MOTIONS");
 
+	HMODULE MillieDC = GetModuleHandle(L"FemaleTails");
+	HMODULE MillieDX = GetModuleHandle(L"FemaleTailsDX");
+
 	const IniFile* config = new IniFile(std::string(path) + "\\config.ini");
 
 	std::string Version_String = "Dreamcast";
@@ -5265,6 +5268,16 @@ extern "C" __declspec(dllexport) void __cdecl Init(const char* path, const Helpe
 				ReplacePVM("SUPERSONIC_EXTRA", "SUPERDXA_EXTRA");
 			}
 		}
+	}
+
+	if (MillieDC)
+	{
+		helperFunctions.ReplaceFile("system\\sounddata\\voice_us\\wma\\0496.wma", "system\\sounddata\\voice_us\\wma\\0496b.wma");
+	}
+
+	if (MillieDX)
+	{
+		helperFunctions.ReplaceFile("system\\sounddata\\voice_us\\wma\\0496.wma", "system\\sounddata\\voice_us\\wma\\0496b.wma");
 	}
 
 	//Replace textures
